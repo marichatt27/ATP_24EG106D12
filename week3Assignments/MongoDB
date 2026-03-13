@@ -1,0 +1,42 @@
+
+db.users.insertOne({
+  name: "Ravi",
+  age: 20,
+  course: "CSE",
+  marks: 85
+})
+
+db.users.insertMany([
+  { name: "Anu", age: 21, course: "ECE", marks: 78 },
+  { name: "Kiran", age: 19, course: "CSE", marks: 90 },
+  { name: "Meena", age: 22, course: "IT", marks: 88 }
+])
+
+db.userss.find()
+db.users.find({ course: "CSE" })
+
+db.users.findOne({name:"Ravi"})
+
+db.users.updateOne({name:"Ravi"},{$set:{age:21}})
+
+db.users.updateMany({course:"Math"},{$set:{course:"Mathematics"}})
+
+db.users.deleteOne({name:"Ravi"})
+
+db.users.deleteMany({age:{$lt:18}})
+
+db.users.find({age:{$gt:20}})
+
+db.users.find().sort({age:1})
+
+db.users.updateOne({ name: "Ravi" },{ $set: { age: 21 } })
+
+db.users.updateOne({ name: "Ravi" },{ $set: { city: "Hyderabad" } })
+
+db.users.updateOne({ name: "Ravi" },{ $unset: { city: "" } })
+
+db.users.updateOne({ name: "Ravi" },{ $addToSet: { subjects: "English" } })
+
+db.users.updateOne({ name: "Ravi" },{ $push: { subjects: "History" } })
+
+db.users.updateOne({ name: "Ravi" },{ $push: { subjects: { $each: ["Biology", "Chemistry"] } } })
