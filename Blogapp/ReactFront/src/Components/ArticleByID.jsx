@@ -1,238 +1,121 @@
-import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../store/authStore.js";
-import {
-  articlePageWrapper,
-  articleHeader,
-  articleCategory,
-  articleMainTitle,
-  articleAuthorRow,
-  authorInfo,
-  articleContent,
-  articleFooter,
-  articleActions,
-  editBtn,
-  deleteBtn,
-  loadingClass,
-  errorClass,
-  inputClass,
-  commentsWrapper,
-  commentCard,
-  commentHeader,
-  commentUserRow,
-  avatar,
-  commentUser,
-  commentTime,
-  commentText,
-} from "../styles/common.js";
-import { useForm } from "react-hook-form";
+import { useAuth } from "../store/authStore";
+import { useNavigate } from "react-router";
+
 axios.defaults.withCredentials = true;
-function ArticleByID() {
-  const { id } = useParams();
-  const location = useLocation();
+
+function AdminProfile() {
+  const [users, setUsers] = useState([]);
+  const [authors, setAuthors] = useState([]);
+
+  const currentUser = useAuth((state) => state.currentUser);
+  const logout = useAuth((state) => state.logout);
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
 
-  const user = useAuth((state) => state.currentUser);
-  console.log("user ", user);
-
-  const [article, setArticle] = useState(location.state || null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    //if aticle is transferred, then use it
-    if (article) return;
-
-    //otherwise, make api req to read that article by id
-    const getArticle = async () => {
-      setLoading(true);
-
-      try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/user-api/article/${id}`,
-          { withCredentials: true },
-        );
-
-        setArticle(res.data.payload);
-      } catch (err) {
-        setError(err.response?.data?.error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getArticle();
-  }, [id]);
-
-  const formatDate = (date) => {
-    return new Date(date).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
+  const onLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
-  // delete & restore article
-  const toggleArticleStatus = async () => {
-    const newStatus = !article.isArticleActive;
-
-    const confirmMsg = newStatus
-      ? "Restore this article?"
-      : "Delete this article?";
-    if (!window.confirm(confirmMsg)) return;
-
+  const fetchUsers = async () => {
     try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_BACKEND_URL}/author-api/articles`,
-        { articleId: article._id, isArticleActive: newStatus },
+      let res = await axios.get(`https://atp-24eg106d12.onrender.com/admin-api/emails`, {
+        withCredentials: true,
+      });
+
+      console.log("API RESPONSE:", res.data);
+
+      setUsers(res.data.USERS || []);
+      setAuthors(res.data.AUTHORS || []);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const toggleStatus = async (user) => {
+    try {
+      await axios.put(
+        `https://atp-24eg106d12.onrender.com/admin-api/userStatus`,
+        {
+          email: user.email, //FIXED (was userId before)
+          isUserActive: !user.isUserActive,
+        },
         { withCredentials: true },
       );
 
-      console.log("SUCCESS:", res.data);
-
-      setArticle(res.data.payload);
-
-      //  toast.success(res.data.message);
+      fetchUsers();
     } catch (err) {
-      console.log("ERROR:", err.response);
-
-      const msg = err.response?.data?.message;
-
-      if (err.response?.status === 400) {
-        toast(msg); // already deleted/active case
-      } else {
-        setError(msg || "Operation failed");
-      }
+      console.error("Status update error:", err.response?.data || err.message);
     }
   };
 
-  //edit article
-  const editArticle = (articleObj) => {
-    navigate("/edit-article", { state: articleObj });
-  };
+  const renderList = (list, title) => (
+    <>
+      <h3 className="text-lg font-semibold mt-6 mb-2">{title}</h3>
 
-  //post comment by user
-  const addComment = async (commentObj) => {
-    //{comment:"user comment"}
-    //add artcileId
-    commentObj.articleId = article._id;
-    console.log(commentObj);
-    let res = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/user-api/articles`,
-      commentObj,
-      { withCredentials: true },
-    );
-    if (res.status === 200) {
-      setArticle(res.data.payload);
-    }
-  };
+      {list.length === 0 ? (
+        <p className="text-gray-500">No data found</p>
+      ) : (
+        list.map((user) => (
+          <div
+            key={user.email} // unique key fix
+            className="border p-4 mb-3 rounded flex justify-between items-center"
+          >
+            <div>
+              <p>{user.firstName}</p>
+              <p className="text-sm text-gray-500">{user.email}</p>
+              <p>Status: {user.isUserActive ? "Active" : "Blocked"}</p>
+            </div>
 
-  // console.log("article",article)
-
-  if (loading) return <p className={loadingClass}>Loading article...</p>;
-  if (error) return <p className={errorClass}>{error}</p>;
-  if (!article) return null;
+            <button
+              onClick={() => toggleStatus(user)}
+              className={`px-4 py-2 text-white rounded ${
+                user.isUserActive ? "bg-red-500" : "bg-green-500"
+              }`}
+            >
+              {user.isUserActive ? "Block" : "Unblock"}
+            </button>
+          </div>
+        ))
+      )}
+    </>
+  );
 
   return (
-    <div className={articlePageWrapper}>
-      {/* Header */}
-      <div className={articleHeader}>
-        <span className={articleCategory}>{article.category}</span>
+    <div className="max-w-5xl mx-auto px-6 py-10">
+      {/* PROFILE HEADER */}
+      <div className="bg-white border rounded-3xl p-6 mb-8 shadow-sm flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-xl">
+            {currentUser?.firstName?.charAt(0).toUpperCase()}
+          </div>
 
-        <h1 className={`${articleMainTitle} uppercase`}>{article.title}</h1>
-
-        <div className={articleAuthorRow}>
-          <div className={authorInfo}>{user?.role}</div>
-
-          <div>{formatDate(article.createdAt)}</div>
+          <div>
+            <p className="text-sm text-gray-500">Admin Panel</p>
+            <h2 className="text-xl font-semibold">{currentUser?.firstName}</h2>
+          </div>
         </div>
+
+        <button
+          className="bg-red-500 text-white px-5 py-2 rounded-full"
+          onClick={onLogout}
+        >
+          Logout
+        </button>
       </div>
 
-      {/* Content */}
-      <div className={articleContent}>{article.content}</div>
+      {/* USERS */}
+      {renderList(users, "Users")}
 
-      {/* AUTHOR actions */}
-      {user?.role === "AUTHOR" && (
-        <div className={articleActions}>
-          <button className={editBtn} onClick={() => editArticle(article)}>
-            Edit
-          </button>
-
-          <button className={deleteBtn} onClick={toggleArticleStatus}>
-            {article.isArticleActive ? "Delete" : "Restore"}
-          </button>
-        </div>
-      )}
-      {/* form to add comment if role is USER */}
-      {/* USER actions */}
-      {user?.role === "USER" && (
-        <div className={articleActions}>
-          <form onSubmit={handleSubmit(addComment)}>
-            <input
-              type="text"
-              {...register("comment")}
-              className={inputClass}
-              placeholder="Write your comment here..."
-            />
-            <button
-              type="submit"
-              className="bg-amber-600 text-white px-5 py-2 rounded-2xl mt-5"
-            >
-              Add comment
-            </button>
-          </form>
-        </div>
-      )}
-
-      {/* comments */}
-      {/* Comments */}
-      <div className={commentsWrapper}>
-        {article.comments?.length === 0 && (
-          <p className="text-[#a1a1a6] text-sm text-center">No comments yet</p>
-        )}
-
-        {article.comments?.map((commentObj, index) => {
-          const name = commentObj.user?.email || "User";
-          const firstLetter = name.charAt(0).toUpperCase();
-
-          return (
-            <div key={index} className={commentCard}>
-              {/* Header */}
-              <div className={commentHeader}>
-                <div className={commentUserRow}>
-                  <div className={avatar}>{firstLetter}</div>
-
-                  <div>
-                    <p className={commentUser}>{name}</p>
-                    <p className={commentTime}>
-                      {formatDate(commentObj.createdAt || new Date())}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Comment */}
-              <p className={commentText}>{commentObj.comment}</p>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Footer */}
-      <div className={articleFooter}>
-        Last updated: {formatDate(article.updatedAt)}
-      </div>
+      {/* AUTHORS */}
+      {renderList(authors, "Authors")}
     </div>
   );
 }
 
-export default ArticleByID;
-
-// {
-//   "user":"6989799b7013502767d3f82b",
-//   "articleId":"6989750220ce5bf826ec4f7e",
-//   "comment":"good article"
-
-// }
+export default AdminProfile;

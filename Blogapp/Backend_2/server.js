@@ -4,10 +4,10 @@ import { connect } from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { userApp } from "./API/userAPI.js";
-import { adminApp } from "./API/adminAPI.js";
-import { authorApp } from "./API/authorAPI.js";
-import { commonApp } from "./API/commonAPI.js";
+import { userApp } from "./APIs/userAPI.js";
+import { adminApp } from "./APIs/adminAPI.js";
+import { authorApp } from "./APIs/authorAPI.js";
+import { commonApp } from "./APIs/commonAPI.js";
 
 config();
 
@@ -18,12 +18,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://atp-theta.vercel.app",
-    ],
+    origin: true,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
 );
 
@@ -44,5 +40,5 @@ connect(process.env.DB_URL)
     });
   })
   .catch((err) => {
-    console.log("DB error:", err);
+    console.log("DB connection failed:", err);
   });

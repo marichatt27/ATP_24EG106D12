@@ -29,7 +29,7 @@ function UserProfile() {
       try {
         //read articles of all authors
         let res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/user-api/articles`,
+          `https://atp-24eg106d12.onrender.com/user-api/articles`,
           { withCredentials: true },
         );
         //update articles state

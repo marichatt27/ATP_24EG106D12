@@ -39,7 +39,7 @@ function WriteArticles() {
       setLoading(true);
       //make POST req to save new article
       let res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/author-api/article`,
+        `https://atp-24eg106d12.onrender.com/author-api/article`,
         articleObj,
         { withCredentials: true },
       );

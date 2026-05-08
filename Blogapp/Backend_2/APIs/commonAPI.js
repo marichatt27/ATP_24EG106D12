@@ -12,6 +12,7 @@ const { sign } = jwt;
 export const commonApp = exp.Router();
 
 commonApp.post("/users", async (req, res) => {
+  console.log(req.body);
   try {
     const newUser = req.body;
 

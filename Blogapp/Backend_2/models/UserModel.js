@@ -43,7 +43,7 @@ const userSchema = new Schema(
   {
     versionKey: false,
     timestamps: true,
-    strict: "throw",
+    strict: false,
   }
 );
 

@@ -28,7 +28,7 @@ function AdminProfile() {
     try {
       setLoading(true);
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/admin/users`,
+        `https://atp-24eg106d12.onrender.com/admin/users`,
         { withCredentials: true },
       );
       setUsers(res.data.payload || []);
@@ -48,13 +48,13 @@ function AdminProfile() {
     try {
       if (isCurrentlyActive) {
         await axios.put(
-          `${import.meta.env.VITE_BACKEND_URL}/admin/user/${userId}`,
+          `https://atp-24eg106d12.onrender.com/admin/user/${userId}`,
           {},
           { withCredentials: true },
         );
       } else {
         await axios.put(
-          `${import.meta.env.VITE_BACKEND_URL}/admin/user-unblock/${userId}`,
+          `https://atp-24eg106d12.onrender.com/admin/user-unblock/${userId}`,
           {},
           { withCredentials: true },
         );

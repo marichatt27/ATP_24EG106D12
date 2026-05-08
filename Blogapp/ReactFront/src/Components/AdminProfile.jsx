@@ -20,7 +20,7 @@ function AdminProfile() {
 
   const fetchUsers = async () => {
     try {
-      let res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin-api/emails`, {
+      let res = await axios.get(`https://atp-24eg106d12.onrender.com/admin-api/emails`, {
         withCredentials: true,
       });
 
@@ -40,7 +40,7 @@ function AdminProfile() {
   const toggleStatus = async (user) => {
     try {
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/admin-api/userStatus`,
+        `https://atp-24eg106d12.onrender.com/admin-api/userStatus`,
         {
           email: user.email, //FIXED (was userId before)
           isUserActive: !user.isUserActive,

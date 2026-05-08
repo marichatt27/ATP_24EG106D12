@@ -17,7 +17,7 @@ export const useAuth = create((set) => ({
       });
 
       let res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/common-api/login`,
+        `https://atp-24eg106d12.onrender.com/common-api/login`,
         userCred,
         { withCredentials: true },
       );
@@ -48,7 +48,7 @@ export const useAuth = create((set) => ({
       set({ loading: true });
 
       let res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/common-api/logout`,
+        `https://atp-24eg106d12.onrender.com/common-api/logout`,
         { withCredentials: true },
       );
 
@@ -78,7 +78,7 @@ export const useAuth = create((set) => ({
       set({ loading: true });
 
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/common-api/check-auth`,
+        `https://atp-24eg106d12.onrender.com/common-api/check-auth`,
         { withCredentials: true },
       );
 

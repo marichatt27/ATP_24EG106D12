@@ -34,7 +34,7 @@ function Register() {
       console.log(userObj)
       //make http request to create user
       let res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/common-api/users`,
+        `https://atp-24eg106d12.onrender.com/common-api/users`,
         userObj
       );
       
@@ -58,160 +58,169 @@ function Register() {
   }
 
   return (
-    <div
-      className={`${pageBackground} flex items-center justify-center py-16 px-4`}
-    >
-      <div className={formCard}>
-        <h2 className={formTitle}>Create an Account</h2>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 via-blue-700 to-cyan-500 px-4">
 
-        {/* API Error */}
-        {/* {apiError && <p className={errorClass}>{apiError}</p>} */}
+    <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-10">
 
-        <form onSubmit={handleSubmit(onUserRegister)}>
-          {/* ROLE */}
-          <div className="mb-5">
-            <p className={labelClass}>Register as</p>
+      {/* TITLE */}
+      <div className="text-center mb-8">
+        <h2 className="text-4xl font-extrabold text-gray-800">
+          Create Account
+        </h2>
 
-            <div className="flex gap-6 mt-1">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  value="USER"
-                  {...register("role", {
-                    required: "Please select a role",
-                  })}
-                  className="accent-blue-600 w-4 h-4"
-                />
-                <span className="text-sm">User</span>
-              </label>
-
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  value="AUTHOR"
-                  {...register("role", {
-                    required: "Please select a role",
-                  })}
-                  className="accent-blue-600 w-4 h-4"
-                />
-                <span className="text-sm">Author</span>
-              </label>
-            </div>
-
-            {errors.role && <p className={errorClass}>{errors.role.message}</p>}
-          </div>
-
-          <div className={divider} />
-
-          {/* NAME */}
-          <div className="sm:flex gap-4 mb-4">
-            <div className="flex-1">
-              <label className={labelClass}>First Name</label>
-              <input
-                type="text"
-                className={inputClass}
-                placeholder="First name"
-                {...register("firstName", {
-                  required: "First name is required",
-                  minLength: {
-                    value: 2,
-                    message: "At least 2 characters required",
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: "Max 30 characters allowed",
-                  },
-                  validate: (v) => v.trim().length > 0 || "Cannot be empty",
-                })}
-              />
-              {errors.firstName && (
-                <p className={errorClass}>{errors.firstName.message}</p>
-              )}
-            </div>
-
-            <div className="flex-1">
-              <label className={labelClass}>Last Name</label>
-              <input
-                type="text"
-                className={inputClass}
-                placeholder="Last name"
-                {...register("lastName", {
-                  maxLength: {
-                    value: 30,
-                    message: "Max 30 characters allowed",
-                  },
-                })}
-              />
-              {errors.lastName && (
-                <p className={errorClass}>{errors.lastName.message}</p>
-              )}
-            </div>
-          </div>
-
-          {/* EMAIL */}
-          <div className={formGroup}>
-            <label className={labelClass}>Email</label>
-            <input
-              type="email"
-              className={inputClass}
-              placeholder="you@example.com"
-              {...register("email", {
-                required: "Email is required",
-                required: [true, "Password is required"],
-              })}
-            />
-            {errors.email && (
-              <p className={errorClass}>{errors.email.message}</p>
-            )}
-          </div>
-
-          {/* PASSWORD */}
-          <div className={formGroup}>
-            <label className={labelClass}>Password</label>
-            <input
-              type="password"
-              className={inputClass}
-              placeholder="Min. 8 characters"
-              {...register("password", {
-                required: "Password is required",
-              })}
-            />
-            {errors.password && (
-              <p className={errorClass}>{errors.password.message}</p>
-            )}
-          </div>
-
-          {/* PROFILE IMAGE */}
-          <div className={formGroup}>
-            <label className={labelClass}>Profile Image</label>
-
-            <input
-              type="text"
-              accept="image/png, image/jpeg"
-              {...register("profileImageUrl")}
-            />
-
-            {errors.profileImageUrl && (
-              <p className={errorClass}>{errors.profileImageUrl.message}</p>
-            )}
-          </div>
-
-          {/* SUBMIT */}
-          <button type="submit" className={submitBtn}>
-            Create Account
-          </button>
-        </form>
-
-        {/* FOOTER */}
-        <p className={`${mutedText} text-center mt-5`}>
-          Already have an account?{" "}
-          <NavLink to="/Login" className="text-[#0066cc] font-medium">
-            Sign in
-          </NavLink>
+        <p className="text-gray-500 mt-2">
+          Join BlogSphere today ✨
         </p>
       </div>
+
+      {/* ERROR */}
+      {apiError && (
+        <p className="bg-red-100 text-red-500 p-3 rounded-xl mb-5 text-center">
+          {apiError}
+        </p>
+      )}
+
+      <form onSubmit={handleSubmit(onUserRegister)}>
+
+        {/* ROLE */}
+        <div className="mb-5">
+          <p className="font-semibold text-gray-700 mb-3">
+            Register as
+          </p>
+
+          <div className="flex gap-4">
+
+            <label className="flex items-center gap-2 border border-gray-300 px-4 py-3 rounded-xl cursor-pointer hover:border-blue-500 transition w-full justify-center">
+              <input
+                type="radio"
+                value="USER"
+                {...register("role", {
+                  required: "Please select a role",
+                })}
+                className="accent-blue-600"
+              />
+              <span>User</span>
+            </label>
+
+            <label className="flex items-center gap-2 border border-gray-300 px-4 py-3 rounded-xl cursor-pointer hover:border-blue-500 transition w-full justify-center">
+              <input
+                type="radio"
+                value="AUTHOR"
+                {...register("role", {
+                  required: "Please select a role",
+                })}
+                className="accent-blue-600"
+              />
+              <span>Author</span>
+            </label>
+
+          </div>
+
+          {errors.role && (
+            <p className="text-red-500 mt-2">
+              {errors.role.message}
+            </p>
+          )}
+        </div>
+
+        {/* FIRST NAME */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="First Name"
+            className="w-full border border-gray-300 p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("firstName", {
+              required: "First name is required",
+            })}
+          />
+
+          {errors.firstName && (
+            <p className="text-red-500 mt-2">
+              {errors.firstName.message}
+            </p>
+          )}
+        </div>
+
+        {/* LAST NAME */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Last Name"
+            className="w-full border border-gray-300 p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("lastName")}
+          />
+        </div>
+
+        {/* EMAIL */}
+        <div className="mb-4">
+          <input
+            type="email"
+            placeholder="Email Address"
+            className="w-full border border-gray-300 p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("email", {
+              required: "Email is required",
+            })}
+          />
+
+          {errors.email && (
+            <p className="text-red-500 mt-2">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        {/* PASSWORD */}
+        <div className="mb-4">
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full border border-gray-300 p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("password", {
+              required: "Password is required",
+            })}
+          />
+
+          {errors.password && (
+            <p className="text-red-500 mt-2">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        {/* PROFILE IMAGE */}
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Profile Image URL"
+            className="w-full border border-gray-300 p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+            {...register("profileImageUrl")}
+          />
+        </div>
+
+        {/* BUTTON */}
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white py-4 rounded-xl font-bold text-lg hover:scale-105 transition duration-300 shadow-lg"
+        >
+          Create Account
+        </button>
+
+      </form>
+
+      {/* FOOTER */}
+      <p className="text-center text-gray-500 mt-6">
+        Already have an account?{" "}
+        <NavLink
+          to="/Login"
+          className="text-blue-600 font-semibold hover:underline"
+        >
+          Sign In
+        </NavLink>
+      </p>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default Register;
