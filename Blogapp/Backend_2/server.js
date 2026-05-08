@@ -28,6 +28,10 @@ app.use("/admin-api", adminApp);
 app.use("/author-api", authorApp);
 app.use("/common-api", commonApp);
 
+app.get("/", (req, res) => {
+  res.send("BlogApp Backend Running");
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
