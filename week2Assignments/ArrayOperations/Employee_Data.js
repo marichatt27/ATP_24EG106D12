@@ -21,6 +21,7 @@
 //     4. find() employee with salary 30000
 //     5. findIndex() of employee "Neha"
 
+// Employee data
 const employees = [
   { id: 201, name: "Amit", salary: 45000, department: "IT" },
   { id: 202, name: "Neha", salary: 60000, department: "HR" },
@@ -28,11 +29,16 @@ const employees = [
   { id: 204, name: "Pooja", salary: 30000, department: "Sales" }
 ];
 
-//1
-let r1=employees.filter(emp=>emp.department=='IT')
-console.log(r1)
-//2
-let r2 = employees.map(emp => {
+// 1. Filter employees from IT department
+let itEmployees = employees.filter(
+  emp => emp.department == "IT"
+);
+
+console.log(itEmployees);
+
+// 2. Add netSalary with 10% bonus
+let updatedEmployees = employees.map(emp => {
+
   return {
     id: emp.id,
     name: emp.name,
@@ -40,14 +46,29 @@ let r2 = employees.map(emp => {
     department: emp.department,
     netSalary: emp.salary + emp.salary * 0.10
   };
+
 });
-console.log(r2)
-//3
-let r3=employees.reduce((acc,emp)=>acc+emp.salary,0)
-console.log(r3)
-//4
-let r4=employees.find(emp=>emp.salary==30000)
-console.log(r4)
-//5
-let r5=employees.findIndex(emp=>emp.name=='Neha')
-console.log(r5)
+
+console.log(updatedEmployees);
+
+// 3. Calculate total salary payout
+let totalSalary = employees.reduce(
+  (acc, emp) => acc + emp.salary,
+  0
+);
+
+console.log(totalSalary);
+
+// 4. Find employee with salary 30000
+let employeeDetails = employees.find(
+  emp => emp.salary == 30000
+);
+
+console.log(employeeDetails);
+
+// 5. Find index of employee "Neha"
+let nehaIndex = employees.findIndex(
+  emp => emp.name == "Neha"
+);
+
+console.log(nehaIndex);

@@ -22,6 +22,7 @@
 //     4. find() movie "Joker"
 //     5. findIndex() of "Avengers"
 
+// Movie data
 const movies = [
   { id: 1, title: "Inception", genre: "Sci-Fi", rating: 8.8 },
   { id: 2, title: "Joker", genre: "Drama", rating: 8.4 },
@@ -29,19 +30,40 @@ const movies = [
   { id: 4, title: "Interstellar", genre: "Sci-Fi", rating: 8.6 }
 ];
 
-//1
-let r1=movies.filter(mov=>mov.genre=='Sci-Fi')
-console.log(r1)
-//2
-let r2 = movies.map(movie => `${movie.title} (${movie.rating})`);
-console.log(r2)
-//3
-let r3=movies.reduce((acc ,mov)=>acc+mov.rating,0)
-let avg=r3/movies.length
-console.log(avg)
-//4
-let r4=movies.find(mov=>mov.title=='Joker')
-console.log(r4)
-//5
-let r5=movies.findIndex(mov=>mov.title=="Avengers")
-console.log(r5)
+// 1. Filter only Sci-Fi movies
+let sciFiMovies = movies.filter(
+  movie => movie.genre == "Sci-Fi"
+);
+
+console.log(sciFiMovies);
+
+// 2. Create formatted movie strings
+let movieRatings = movies.map(
+  movie => `${movie.title} (${movie.rating})`
+);
+
+console.log(movieRatings);
+
+// 3. Calculate average movie rating
+let totalRating = movies.reduce(
+  (acc, movie) => acc + movie.rating,
+  0
+);
+
+let averageRating = totalRating / movies.length;
+
+console.log(averageRating);
+
+// 4. Find movie "Joker"
+let jokerMovie = movies.find(
+  movie => movie.title == "Joker"
+);
+
+console.log(jokerMovie);
+
+// 5. Find index of "Avengers"
+let avengersIndex = movies.findIndex(
+  movie => movie.title == "Avengers"
+);
+
+console.log(avengersIndex);

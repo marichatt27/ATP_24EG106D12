@@ -18,6 +18,7 @@
 //     5. Use findIndex() to find the position of "Keyboard"
 
 
+// Shopping cart data
 const cart = [
   { id: 101, name: "Laptop", price: 60000, quantity: 1, inStock: true },
   { id: 102, name: "Mouse", price: 800, quantity: 2, inStock: true },
@@ -25,10 +26,11 @@ const cart = [
   { id: 104, name: "Monitor", price: 12000, quantity: 1, inStock: true }
 ];
 
-//1
-let r1=cart.filter(elements=> elements.inStock)
-console.log(r1)
-//2
+// 1. Filter only products that are in stock
+let r1 = cart.filter(elements => elements.inStock);
+console.log(r1);
+
+// 2. Create new array with product name and total price
 let r2 = cart.map(element => {
   return {
     name: element.name,
@@ -36,12 +38,15 @@ let r2 = cart.map(element => {
   };
 });
 console.log(r2);
-//3
-let r3= cart.reduce((acc,ele)=>acc+ele.price*ele.quantity,0)
-console.log(r3)
-//4
-let r4=cart.find(element=>element.name=='Mouse')
-console.log(r4)
-//5
-let r5=cart.findIndex(element=>element.name=='Keyboard')
-console.log(r5)
+
+// 3. Calculate grand total of cart
+let r3 = cart.reduce((acc, ele) => acc + ele.price * ele.quantity, 0);
+console.log(r3);
+
+// 4. Find details of Mouse product
+let r4 = cart.find(element => element.name == 'Mouse');
+console.log(r4);
+
+// 5. Find index position of Keyboard
+let r5 = cart.findIndex(element => element.name == 'Keyboard');
+console.log(r5);

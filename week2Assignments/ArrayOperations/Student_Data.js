@@ -25,6 +25,7 @@
 //    4. find() the student who scored 92
 //    5. findIndex() of student "Kiran"
 
+// Student data
 const students = [
   { id: 1, name: "Ravi", marks: 78 },
   { id: 2, name: "Anjali", marks: 92 },
@@ -33,31 +34,48 @@ const students = [
   { id: 5, name: "Arjun", marks: 40 }
 ];
 
-//1
-let r1=students.filter(element=>element.marks>=40)
-console.log(r1)
-//2
-let r2=students.map(student=>{
-        if (student.marks >= 90) grade = "A";
-        else if (student.marks >= 75) grade = "B";
-        else if (student.marks >= 60) grade = "C";
-        else grade = "D";
-    return {
+// 1. Filter students who passed (marks >= 40)
+let passedStudents = students.filter(student => student.marks >= 40);
+console.log(passedStudents);
+
+// 2. Add grade field using map()
+let gradedStudents = students.map(student => {
+
+  let grade;
+
+  if (student.marks >= 90) grade = "A";
+  else if (student.marks >= 75) grade = "B";
+  else if (student.marks >= 60) grade = "C";
+  else grade = "D";
+
+  return {
     id: student.id,
     name: student.name,
     marks: student.marks,
     grade: grade
-  }
-}
-)
-console.log(r2)
-//3
-let sum=students.reduce((acc,ele)=>acc+ele.marks,0)
-let avg=sum/students.length
-console.log(avg)
-//4
-let r3=students.find(element=>element.marks==92)
-console.log(r3)
-//5
-let r4=students.findIndex(element=>element.name=='Kiran')
-console.log(r4)
+  };
+});
+
+console.log(gradedStudents);
+
+// 3. Calculate average marks using reduce()
+let totalMarks = students.reduce(
+  (acc, student) => acc + student.marks,
+  0
+);
+
+let averageMarks = totalMarks / students.length;
+
+console.log(averageMarks);
+
+// 4. Find student who scored 92
+let topper = students.find(student => student.marks == 92);
+
+console.log(topper);
+
+// 5. Find index of student "Kiran"
+let kiranIndex = students.findIndex(
+  student => student.name == "Kiran"
+);
+
+console.log(kiranIndex);
